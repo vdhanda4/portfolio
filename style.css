@@ -139,4 +139,6 @@ body {
   li {
     margin-bottom: 0.4em;
   }
-  
+  [style*="color-scheme: dark"] .resume {
+    color: black;
+  }
