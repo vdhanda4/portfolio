@@ -12,25 +12,25 @@
     <nav>
         <a href="../index.html">Home</a>
         <a href="../projects/">Projects</a>
-        <a href="../contact/">Contact</a>
+        <a href="index.html" class="current">Contact</a>
         <a href="../resume/">Resume</a>
         <a href="https://github.com/vdhanda4" target="_blank">GitHub</a>
       </nav>
     <br>
     <form action="mailto:vdhanda@ucsd.edu" method="POST" enctype="text/plain">
         <label>
-            Email:
-            <input type="email" name="email" value="Your Email">
+          Email:
+          <input type="email" name="email" placeholder="Your Email" />
         </label>
         <label>
-            Subject:
-            <input name="subject" value="Hello!...">
+          Subject:
+          <input type="text" name="subject" placeholder="Hello..." />
         </label>
         <label>
-            Body:
-            <textarea name="body">Message...</textarea>
+          Message:
+          <textarea name="body" placeholder="Message..."></textarea>
         </label>
-        <button>Submit</button>
-    </form>
+        <button type="submit">Send</button>
+      </form>      
 </body>
 </html>
