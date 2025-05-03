@@ -142,3 +142,20 @@ body {
   [style*="color-scheme: dark"] .resume {
     color: black;
   }
+  #profile-stats dl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 1rem;
+    margin-top: 0.5rem;
+    padding: 0;
+  }
+  
+  #profile-stats dt,
+  #profile-stats dd {
+    margin: 0;
+    text-align: center;
+  }
+  
+  #profile-stats dt {
+    font-weight: bold;
+  }
