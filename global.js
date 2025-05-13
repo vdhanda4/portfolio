@@ -100,11 +100,17 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
     article.innerHTML = `
       <${headingTag}>${project.title || 'Untitled'}</${headingTag}>
       <img src="${project.image || ''}" alt="${project.title || 'Project image'}">
-      <p>${project.description || 'No description available.'}</p>
+      <div class="project-details">
+        <p class="project-description">${project.description || 'No description available.'}</p>
+        <p class="project-year">Year: ${project.year || '2024'}</p>
+      </div>
     `;
     containerElement.appendChild(article);
   }
 }
+
+
+
 
 export async function fetchGitHubData(username) {
   return fetchJSON(`https://api.github.com/users/${username}`);

@@ -115,6 +115,34 @@ body {
   .projects h2 {
     margin: 0;
   }
+  .project-details {
+    margin-top: 5px;
+}
+
+.project-description {
+    font-size: 1em;
+    margin-bottom: 2px;
+}
+
+.project-year {
+    font-size: 0.9em;
+    color: gray;
+    font-family: Baskerville, serif;
+    font-variant-numeric: oldstyle-nums;
+    margin-top: 2px;
+}
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+  overflow: visible;
+}
+
+#visualization-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
   h1 {
     font-size: 400%;
     margin-bottom: 0.5em;
@@ -144,7 +172,7 @@ body {
   }
   #profile-stats dl {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    grid-template-columns: repeat(4, 1fr); 
     gap: 1rem;
     margin-top: 0.5rem;
     padding: 0;
@@ -159,3 +187,78 @@ body {
   #profile-stats dt {
     font-weight: bold;
   }
+
+  #visualization-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin: 20px auto;
+    flex-wrap: wrap;
+  }
+  
+  #projects-plot {
+    max-width: 20em;
+    margin-block: 2em;
+    overflow: visible;
+    display: inline-block;
+  }
+  
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    padding: 10px;
+    margin: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 400px;
+    flex: 1;
+  }
+  
+  .legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 5px;
+    background-color: #fff;
+    border-radius: 4px;
+  }
+  
+  .swatch {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background-color: var(--color);
+  }
+
+  path {
+    transition: 300ms;
+    cursor: pointer;
+  }
+  
+  svg:has(path:hover) path:not(:hover) {
+    opacity: 0.5;
+  }
+  
+  .selected {
+    --color: oklch(60% 45% 0) !important;
+  }
+  
+  .selected-wedge {
+    fill: oklch(60% 45% 0)  !important;
+  }
+  
+  .selected li {
+    background-color: oklch(60% 45% 0) ;
+    color: white;
+  }
+  
