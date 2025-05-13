@@ -262,3 +262,141 @@ body {
     color: white;
   }
   
+  .stats {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.stats dt {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.stats dd {
+    margin-left: 20px;
+}
+
+.stats-section {
+  margin: 20px auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.stat-item {
+  background-color: #f9f9f9;
+  padding: 15px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+
+.stat-item strong {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+#chart {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.dots circle {
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.dots circle:hover {
+  opacity: 1;
+}
+
+svg {
+  background-color: #f9f9f9;
+}
+
+
+.gridlines line {
+  stroke-dasharray: 3, 3;
+  opacity: 0.6;
+}
+
+.gridlines .day {
+  stroke: #e76f51;
+}
+
+.gridlines .night {
+  stroke: #1d3557;
+}
+dl.info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 8px;
+  margin: 0;
+  padding: 8px;
+}
+
+dl.info dt {
+  font-weight: bold;
+}
+
+dl.info dd {
+  margin: 0;
+}
+.tooltip {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #333;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  visibility: hidden; /* Initially hidden */
+}
+
+.tooltip.show {
+  opacity: 1;
+  visibility: visible; /* Make visible when hovered */
+}
+
+dl.info {
+  transition-duration: 500ms;
+  transition-property: opacity, visibility;
+}
+
+dl.info[hidden]:not(:hover, :focus-within) {
+  opacity: 0;
+  visibility: hidden;
+}
+circle {
+  transition: 200ms;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+circle:hover {
+  transform: scale(1.5);
+  fill: darkblue;
+}
+
+circle.selected {
+    fill: #ff6b6b;
+}
+
+
