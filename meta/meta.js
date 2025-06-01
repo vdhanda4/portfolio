@@ -33,6 +33,36 @@ function renderCommitInfo(data, commits) {
       statItem.html(`${stat.label}: ${stat.value}`);
     });
   }
+
+  function updateFileDisplay(filteredCommits) {
+    const lines = filteredCommits.flatMap(d => d.lines);
+  
+    const files = d3
+      .groups(lines, d => d.file)
+      .map(([name, lines]) => ({ name, lines }))
+      .sort((a, b) => b.lines.length - a.lines.length);
+  
+    const filesContainer = d3.select('#files')
+      .selectAll('div')
+      .data(files, d => d.name)
+      .join(
+        enter => enter.append('div').call(div => {
+          div.append('dt').append('code');
+          div.append('dd');
+        })
+      );
+  
+      filesContainer.select('dt > code')
+      .html(d => `${d.name}<small>${d.lines.length} lines</small>`);
+    
+      filesContainer.select('dd')
+        .selectAll('div')
+        .data(d => d.lines)
+        .join('div')
+        .attr('class', 'loc');
+
+  }
+  
   
 
 function processCommits(data) {
@@ -122,16 +152,28 @@ function processCommits(data) {
         .attr('r', (d) => rScale(d.totalLines))
         .attr('fill', 'steelblue')
         .style('fill-opacity', 0.7)
-        .on('mouseenter', (event, commit) => {
-            d3.select(event.currentTarget).style('fill-opacity', 1); 
-            renderTooltipContent(commit);
-            updateTooltipVisibility(true);
-            updateTooltipPosition(event);
-        })
-        .on('mouseleave', (event) => {
-            d3.select(event.currentTarget).style('fill-opacity', 0.7);
-            updateTooltipVisibility(false);
-        });
+        .style('--r', (d) => rScale(d.totalLines))
+        .on('mouseenter', function (event, commit) {
+          d3.select(this)
+            .transition()
+            .duration(150)
+            .style('fill-opacity', 1);
+      
+          renderTooltipContent(commit);
+          updateTooltipVisibility(true);
+          updateTooltipPosition(event);
+      })
+      .on('mousemove', function (event) {
+          updateTooltipPosition(event); // keeps tooltip in sync with cursor
+      })
+      .on('mouseleave', function () {
+          d3.select(this)
+            .transition()
+            .duration(150)
+            .style('fill-opacity', 0.7);
+      
+          updateTooltipVisibility(false);
+      });
 }
 
 function updateScatterPlot(data, commits) {
@@ -171,16 +213,28 @@ function updateScatterPlot(data, commits) {
     .attr('r', (d) => rScale(d.totalLines))
     .attr('fill', 'steelblue')
     .style('fill-opacity', 0.7)
-    .on('mouseenter', (event, commit) => {
-      d3.select(event.currentTarget).style('fill-opacity', 1);
+    .style('--r', (d) => rScale(d.totalLines))
+    .on('mouseenter', function (event, commit) {
+      d3.select(this)
+        .transition()
+        .duration(150)
+        .style('fill-opacity', 1);
+  
       renderTooltipContent(commit);
       updateTooltipVisibility(true);
       updateTooltipPosition(event);
-    })
-    .on('mouseleave', (event) => {
-      d3.select(event.currentTarget).style('fill-opacity', 0.7);
+  })
+  .on('mousemove', function (event) {
+      updateTooltipPosition(event); // keeps tooltip in sync with cursor
+  })
+  .on('mouseleave', function () {
+      d3.select(this)
+        .transition()
+        .duration(150)
+        .style('fill-opacity', 0.7);
+  
       updateTooltipVisibility(false);
-    });
+  });
 }
 
 
@@ -279,6 +333,7 @@ function renderLanguageBreakdown(selection) {
 
 let data = await loadData();
 let commits = processCommits(data);
+
 let filteredCommits = commits;
 let commitProgress = 100;
 
@@ -307,6 +362,7 @@ function onTimeSliderChange() {
   // Update the scatter plot
   renderCommitInfo(data, filteredCommits);
   updateScatterPlot(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
 }
 
 

@@ -354,8 +354,57 @@ dl.info dt {
 dl.info dd {
   margin: 0;
 }
+
+#files {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+
+  > div {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+
+  dt {
+    grid-column: 1;
+  }
+
+  dd {
+    grid-column: 2;
+  }
+}
+
+.loc {
+  display: flex;
+  width: 0.5em;
+  aspect-ratio: 1;
+  background: steelblue;
+  border-radius: 50%;
+}
+
+#files dd {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  align-content: start;
+  gap: 0.15em;
+  padding-top: 0.6em;
+  margin-left: 0;
+}
+
+#files code {
+  font-weight: bold;
+}
+
+#files small {
+  display: block;
+  font-size: 0.75em;
+  opacity: 0.6;
+}
+
 .tooltip {
-  position: absolute;
+  position: fixed;
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -367,14 +416,14 @@ dl.info dd {
   opacity: 0;
   transform: translate(-50%, -50%);
   transition: opacity 0.2s ease, transform 0.2s ease;
-  visibility: hidden; /* Initially hidden */
+  visibility: hidden;
+  z-index: 999;
 }
 
 .tooltip.show {
   opacity: 1;
-  visibility: visible; /* Make visible when hovered */
+  visibility: visible;
 }
-
 dl.info {
   transition-duration: 500ms;
   transition-property: opacity, visibility;
@@ -385,9 +434,15 @@ dl.info[hidden]:not(:hover, :focus-within) {
   visibility: hidden;
 }
 circle {
-  transition: 200ms;
-  transform-origin: center;
-  transform-box: fill-box;
+  fill: steelblue;
+  opacity: 0.6;
+  transition: all 200ms, r calc(var(--r) * 100ms);
+}
+
+@starting-style {
+  circle {
+    r: 0;
+  }
 }
 
 circle:hover {
