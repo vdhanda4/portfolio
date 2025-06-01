@@ -8,14 +8,22 @@
     <link rel="stylesheet" href="../style.css" />
     <script type="module" src="../global.js"></script>
     <script type="module" src="projects.js"></script>
+    <script type="module" src="./meta.js"></script>
 </head>
 <body>
     <h1>Meta</h1>
     <p>This page includes stats about the code of this website.</p>
+    <div id="commit-filter" style="margin-bottom: 1em;">
+        <div style="display: flex; align-items: center; gap: 1em;">
+          <label for="commit-progress">Show commits until:</label>
+          <input type="range" id="commit-progress" min="0" max="100" value="100" style="flex: 1;" />
+        </div>
+        <time id="commit-time" style="display: block; margin-top: 0.3em; text-align: right;"></time>
+      </div>
+      
     <div id="meta-stats" class="stats-section">
       <div class="stats-row"></div>
     </div>
-    <script type="module" src="./main.js"></script>
     <h2>Commits by time of day</h2>
     <div id="chart"></div>
     <dl id="commit-tooltip" class="info tooltip" hidden>
@@ -32,5 +40,7 @@
         <dt>Lines Edited</dt>
         <dd id="commit-lines"></dd>
     </dl>
+    <dl id="language-breakdown" class="stats"></dl>
+
   </body>  
 </html>
