@@ -374,14 +374,6 @@ dl.info dd {
   }
 }
 
-.loc {
-  display: flex;
-  width: 0.5em;
-  aspect-ratio: 1;
-  background: steelblue;
-  border-radius: 50%;
-}
-
 #files dd {
   grid-column: 2;
   display: flex;
@@ -402,7 +394,13 @@ dl.info dd {
   font-size: 0.75em;
   opacity: 0.6;
 }
-
+.loc {
+  display: flex;
+  width: 0.5em;
+  aspect-ratio: 1;
+  background: var(--color);
+  border-radius: 50%;
+}
 .tooltip {
   position: fixed;
   background-color: rgba(255, 255, 255, 0.9);
@@ -454,4 +452,32 @@ circle.selected {
     fill: #ff6b6b;
 }
 
+#scrolly-1 {
+  position: relative;
+  display: flex;
+  gap: 1rem;
 
+  > * {
+    flex: 1;
+  }
+  margin-bottom: 4rem;
+}
+
+#scatter-story {
+  position: relative;
+}
+
+#scatter-plot {
+  position: sticky;
+  top: 0;
+  left: 0;
+  bottom: auto;
+  height: 50vh;
+}
+
+.step {
+  padding-bottom: 80vh; /* adjust for scroll pacing */
+  max-width: 40ch;
+  font-size: 1rem;
+  line-height: 1.5;
+}

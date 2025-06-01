@@ -1,4 +1,6 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import scrollama from 'https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm';
+
 let xScale, yScale;
 async function loadData() {
   const data = await d3.csv('loc.csv', (row) => ({
@@ -8,6 +10,7 @@ async function loadData() {
     length: Number(row.length),
     date: new Date(row.date + 'T00:00' + row.timezone),
     datetime: new Date(row.datetime),
+    type: row.type,
   }));
 
   return data;
@@ -35,6 +38,7 @@ function renderCommitInfo(data, commits) {
   }
 
   function updateFileDisplay(filteredCommits) {
+    let colors = d3.scaleOrdinal(d3.schemeTableau10);
     const lines = filteredCommits.flatMap(d => d.lines);
   
     const files = d3
@@ -53,46 +57,48 @@ function renderCommitInfo(data, commits) {
       );
   
       filesContainer.select('dt > code')
-      .html(d => `${d.name}<small>${d.lines.length} lines</small>`);
-    
+        .html(d => `${d.name}<small>${d.lines.length} lines</small>`);
+
       filesContainer.select('dd')
         .selectAll('div')
         .data(d => d.lines)
         .join('div')
-        .attr('class', 'loc');
+        .attr('class', 'loc')
+        .attr('style', d => `--color: ${colors(d.type)}`);
 
   }
   
   
 
 function processCommits(data) {
-    return d3
-      .groups(data, (d) => d.commit)
-      .map(([commit, lines]) => {
-        let first = lines[0];
-        let { author, date, time, timezone, datetime } = first;
-        let ret = {
-          id: commit,
-          url: 'https://github.com/YOUR_REPO/commit/' + commit,
-          author,
-          date,
-          time,
-          timezone,
-          datetime,
-          hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
-          totalLines: lines.length,
-        };
-  
-        Object.defineProperty(ret, 'lines', {
-          value: lines,
-          writable: false,
-          enumerable: false,
-          configurable: true,
-        });
-  
-        return ret;
+  return d3
+    .groups(data, (d) => d.commit)
+    .map(([commit, lines]) => {
+      let first = lines[0];
+      let { author, date, time, timezone, datetime } = first;
+      let ret = {
+        id: commit,
+        url: 'https://github.com/YOUR_REPO/commit/' + commit,
+        author,
+        date,
+        time,
+        timezone,
+        datetime,
+        hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
+        totalLines: lines.length,
+      };
+
+      Object.defineProperty(ret, 'lines', {
+        value: lines,
+        writable: false,
+        enumerable: false,
+        configurable: true,
       });
-  }
+
+      return ret;
+    })
+    .sort((a, b) => a.datetime - b.datetime); 
+}
   
   
   function renderScatterPlot(data, commits) {
@@ -361,7 +367,7 @@ function onTimeSliderChange() {
 
   // Update the scatter plot
   renderCommitInfo(data, filteredCommits);
-  updateScatterPlot(data, filteredCommits);
+
   updateFileDisplay(filteredCommits);
 }
 
@@ -370,6 +376,46 @@ timeSlider.addEventListener('input', onTimeSliderChange);
 renderCommitInfo(data, commits);
 renderScatterPlot(data, commits); 
 onTimeSliderChange();
+
+d3.select('#scatter-story')
+  .selectAll('.step')
+  .data(commits)
+  .join('div')
+  .attr('class', 'step')
+  .html((d, i) => `
+    On ${d.datetime.toLocaleString('en', {
+      dateStyle: 'full',
+      timeStyle: 'short',
+    })}, I made 
+    <a href="${d.url}" target="_blank">
+      ${i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
+    </a>.
+    I edited ${d.totalLines} lines across ${
+      d3.rollups(d.lines, D => D.length, d => d.file).length
+    } files.
+    Then I looked over all I had made, and I saw that it was very good.
+  `);
+
+  function onStepEnter(response) {
+    const stepCommit = response.element.__data__; // commit object
+    const commitTime = stepCommit.datetime;
+  
+    // Filter commits up to the current one in scroll
+    filteredCommits = commits.filter((d) => d.datetime <= commitTime);
+  
+    // Update visuals
+    renderCommitInfo(data, filteredCommits);
+    updateScatterPlot(data, filteredCommits);
+    updateFileDisplay(filteredCommits);
+  }
+
+  const scroller = scrollama();
+  scroller
+    .setup({
+      container: '#scrolly-1',
+      step: '#scrolly-1 .step',
+    })
+    .onStepEnter(onStepEnter);
 
 
   
